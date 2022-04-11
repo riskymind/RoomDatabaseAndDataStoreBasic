@@ -1,5 +1,6 @@
 package com.asterisk.roomanddatastoreguide.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -22,6 +23,21 @@ class DetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         getUserDetail()
+
+        handleDeleteClick()
+    }
+
+    private fun handleDeleteClick() {
+        // On click delete button
+        binding.btnClearRecord.setOnClickListener {
+            // Clear the db records
+            viewModel.deleteRecords()
+
+            // Navigate to form screen
+            Intent(this, MainActivity::class.java).also {
+                startActivity(it)
+            }
+        }
     }
 
     private fun getUserDetail() {
