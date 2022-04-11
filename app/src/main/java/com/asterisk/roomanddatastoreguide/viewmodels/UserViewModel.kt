@@ -1,4 +1,4 @@
-package com.asterisk.roomanddatastoreguide
+package com.asterisk.roomanddatastoreguide.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.LiveData

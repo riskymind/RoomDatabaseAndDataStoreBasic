@@ -9,9 +9,10 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import com.asterisk.roomanddatastoreguide.R
-import com.asterisk.roomanddatastoreguide.UserViewModel
+import com.asterisk.roomanddatastoreguide.viewmodels.UserViewModel
 import com.asterisk.roomanddatastoreguide.databinding.ActivityMainBinding
 import com.asterisk.roomanddatastoreguide.models.User
+import com.asterisk.roomanddatastoreguide.viewmodels.DatastoreViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val viewModel by viewModels<UserViewModel>()
+    private val datastoreViewModel by viewModels<DatastoreViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,20 +29,38 @@ class MainActivity : AppCompatActivity() {
 
         saveButtonSetup()
 
-        handleClick()
+        checkIfUserHasSavedDetails()
 
         observeResponses()
+    }
+
+    private fun checkIfUserHasSavedDetails() {
+        datastoreViewModel.savedKey.observe(this) { key ->
+            if (key == true) {
+                Intent(this, DetailActivity::class.java).also {
+                    startActivity(it)
+                }
+            }
+            // User hasn't saved details
+            else {
+                initView()
+            }
+        }
+    }
+
+    private fun initView() {
+        handleClick()
     }
 
     private fun observeResponses() {
         viewModel.insertResponse.observe(this) {
             Toast.makeText(this, "Created!!!", Toast.LENGTH_LONG).show()
 
+            datastoreViewModel.setSaveKey(true)
+
             Intent(this, DetailActivity::class.java).also {
                 startActivity(it)
             }
-
-
         }
     }
 
@@ -57,6 +77,7 @@ class MainActivity : AppCompatActivity() {
 
             // Save user record
             viewModel.insertUser(user)
+
 
         }
     }

@@ -7,9 +7,9 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.asterisk.roomanddatastoreguide.R
-import com.asterisk.roomanddatastoreguide.UserViewModel
+import com.asterisk.roomanddatastoreguide.viewmodels.UserViewModel
 import com.asterisk.roomanddatastoreguide.databinding.ActivityDetailBinding
+import com.asterisk.roomanddatastoreguide.viewmodels.DatastoreViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private val viewModel by viewModels<UserViewModel>()
+    private val datastoreViewModel by viewModels<DatastoreViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
@@ -32,6 +33,8 @@ class DetailActivity : AppCompatActivity() {
         binding.btnClearRecord.setOnClickListener {
             // Clear the db records
             viewModel.deleteRecords()
+
+            datastoreViewModel.setSaveKey(false)
 
             // Navigate to form screen
             Intent(this, MainActivity::class.java).also {
