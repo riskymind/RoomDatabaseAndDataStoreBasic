@@ -1,5 +1,6 @@
 package com.asterisk.roomanddatastoreguide.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -33,7 +34,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeResponses() {
         viewModel.insertResponse.observe(this) {
-            Toast.makeText(this, "the is $it", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Created!!!", Toast.LENGTH_LONG).show()
+
+            Intent(this, DetailActivity::class.java).also {
+                startActivity(it)
+            }
+
+
         }
     }
 
